@@ -1,24 +1,6 @@
 `timescale 1ns/1ps
 `define BITWIDTH 8
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    08:29:59 09/04/2022 
-// Design Name: 
-// Module Name:    UAPBCORE 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
+
 module UAPBCORE(
 input PCLK,
 input PRESETN,
