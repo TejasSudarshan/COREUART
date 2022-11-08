@@ -9,7 +9,7 @@ input [7:0]tdataIn;
 output reg[7:0] tdataOut;  
 
 assign tEMPTY = (!tWR && tRD)? 1'b0:1'b1; 
-assign ttxrdy = (!tWR && tRD)? 1'b0:1'b1;
+ assign ttxrdy = (!tWR && tRD)? 1'b1:1'b0;
  
 
 reg [7:0]dout;
