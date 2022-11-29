@@ -3,7 +3,7 @@
 `define SETUP 2'b11
 `define R_ENABLE 2'b10
 `define W_ENABLE 2'b01
-`define BITWIDTH 8 	
+	
 																																																																																														
 module apbslave(
 
@@ -13,12 +13,11 @@ input  psel,
 input  penable,
 input  [1:0]P_ADDR,
 input  pwrite,
-input  [`BITWIDTH-1:0]PW_DATA,
-output reg[`BITWIDTH-1:0]Pr_data,
+input  [BITWIDTH-1:0]PW_DATA,
+output reg[BITWIDTH-1:0]Pr_data,
 output reg P_READY,
-output [`BITWIDTH-1:0]o_baud_val,
-output [`BITWIDTH-1:0]data_in,
-output PARITY_EN,
+output [BITWIDTH-1:0]o_baud_val,
+output [BITWIDTH-1:0]data_in,
 
 output  TX_RDY,
 output  RX_RDY,
@@ -27,12 +26,12 @@ input rbuff_RXRDY
 
 
 );
-
+parameter BITWIDTH=8;
 wire tx_done;
 wire rx_done;
 
 
-reg [`BITWIDTH-1:0] mem[0:3];
+reg [BITWIDTH-1:0] mem[0:3];
 
 reg[1:0] state,next_state;
 
