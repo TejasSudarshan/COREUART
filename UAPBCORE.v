@@ -17,7 +17,7 @@ output wire TX,
 
 output wire TXRDY,
 output wire RXRDY,
-output wire[7:0]DATAOUT
+output wire[`BITWIDTH-1:0]DATAOUT
 //output wire  clktoclk,
 //output wire baudtick
 );
