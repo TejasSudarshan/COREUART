@@ -1,15 +1,14 @@
 `timescale 1ns/1ps
-
-module BGEN
-    #(parameter BITS=8)(
+`define BITWIDTH 8
+module BGEN(
     input clk,
     input reset_n,
     input enable,
-    input [BITS - 1:0] FINAL_VALUE,
+    input [`BITWIDTH - 1:0] FINAL_VALUE,
     output done
     );
   
-    reg [BITS - 1:0] Q_reg, Q_next;
+    reg [`BITWIDTH - 1:0] Q_reg, Q_next;
     
 always @(posedge clk, negedge reset_n)
  begin
