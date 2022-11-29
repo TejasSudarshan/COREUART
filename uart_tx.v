@@ -1,14 +1,12 @@
 `timescale 1ns /1ps
+`define BITWIDTH 8
+`define SB_TICk 16
 
 
-
-module uart_tx
-    #(parameter DBIT =8,SB_TICK = 16// # stop bit ticks
-    )
-(
+module uart_tx(
   input clk, reset_n,
   input tx_start, s_tick,        
-  input [7:0] tx_din,
+  input [`BITWIDTH-1:0] tx_din,
   output reg tx_done_tick,
   output tx
         
@@ -18,8 +16,8 @@ localparam  idle = 0, start = 1,data = 2, stop = 3;
                 
 reg [1:0] state_reg, state_next;
 reg [3:0] s_reg, s_next;                // keep track of the baud rate ticks (16 total)
-reg [DBIT-1:0] n_reg, n_next; // keep track of the number of data bits transmitted
-reg [DBIT-1:0] b_reg, b_next;         // shift the transmitted data bits
+reg [`BITWIDTH-1:0] n_reg, n_next; // keep track of the number of data bits transmitted
+reg [`BITWIDTH-1:0] b_reg, b_next;         // shift the transmitted data bits
 reg tx_reg, tx_next=1;                    // track the transmitted bit
     
     // State and other registers
@@ -88,8 +86,8 @@ case (state_reg)
        if(s_reg == 15)
        begin
        s_next = 0;
-       b_next = {1'b0, b_reg[DBIT - 1:1]}; // Right shift
-      if (n_reg == (DBIT - 1))
+       b_next = {1'b0, b_reg[`BITWIDTH - 1:1]}; // Right shift
+      if (n_reg == (`BITWIDTH - 1))
         state_next = stop;
        else
         n_next = n_reg + 1'b1;
@@ -102,7 +100,7 @@ case (state_reg)
    stop: begin
       tx_next = 1;
      if (s_tick) 
-      if(s_reg == (SB_TICK - 1))
+     if(s_reg == (`SB_TICK - 1))
          begin
           tx_done_tick = 1'b1;
           state_next = idle;
