@@ -3,7 +3,7 @@
 `define SETUP 2'b11
 `define R_ENABLE 2'b10
 `define W_ENABLE 2'b01
-`define DBIT 8 	
+`define BITWIDTH 8 	
 																																																																																														
 module apbslave(
 
@@ -13,11 +13,11 @@ input  psel,
 input  penable,
 input  [1:0]P_ADDR,
 input  pwrite,
-input  [`DBIT-1:0]PW_DATA,
-output reg[`DBIT-1:0]Pr_data,
+input  [`BITWIDTH-1:0]PW_DATA,
+output reg[`BITWIDTH-1:0]Pr_data,
 output reg P_READY,
-output [`DBIT-1:0]o_baud_val,
-output [`DBIT-1:0]data_in,
+output [`BITWIDTH-1:0]o_baud_val,
+output [`BITWIDTH-1:0]data_in,
 output PARITY_EN,
 
 output  TX_RDY,
@@ -30,16 +30,13 @@ input rbuff_RXRDY
 
 wire tx_done;
 wire rx_done;
-//reg [7:0]data=8'b10101010;
-//reg [7:0]data1=8'b00000001;
-//reg [7:0]data2=8'h9a;
-//reg [7:0]data3=8'b00000000;
 
-reg [`DBIT-1:0] mem[0:3];
+
+reg [`BITWIDTH-1:0] mem[0:3];
 
 reg[1:0] state,next_state;
-integer i;
-reg [7:0]txdout;
+
+
 
 assign TX_RDY = (tf_TXRDY)? 1'b1:1'b0;
 assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0;
@@ -94,11 +91,7 @@ end
  
 always@(posedge pclk)
  begin
- //mem[3]=data;
- //mem[0]=data1;
-// mem[1]=data3;
-// mem[2]=data2;
-
+ 
 case(state)
 `SETUP:begin
   P_READY=1'b0;
