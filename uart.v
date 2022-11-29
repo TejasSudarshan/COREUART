@@ -1,22 +1,18 @@
 `timescale 1ns/1ps
-
-module uart
-    #(
-        parameter DBIT = 8,     
-                  SB_TICK = 16                    
-     )     
-    (
+`define BITWIDTH 8
+`define SB_TICK  16
+module uart (
         input clk, reset_n,
-        output [7:0] r_data,
+	output [`BITWIDTH-1:0] r_data,
         input rd_uart,
-		  input [1:0]paddr,
+	input [1:0]paddr,
         output rx_empty,
         input rx,
-        input [DBIT - 1: 0] w_data,
+	input [`BITWIDTH-1: 0] w_data,
         input wr_uart,
         output tx_full,
         output t_x,
-		  input [DBIT-1:0] TIMER_FINAL_VALUE
+	input [`BIDWIDTH-1:0] TIMER_FINAL_VALUE
 		  //output tick
     );
     
@@ -32,8 +28,8 @@ module uart
     
     // Receiver
     wire rx_done_tick;
-    wire [7:0] rx_dout;
-    uart_rx #(.DBIT(8), .SB_TICK(SB_TICK)) receiver(
+    wire [`BITWIDTH-1:0] rx_dout;
+    uart_rx receiver(
         .clk(clk),
         .reset_n(~reset_n),
         .rx(rx),
@@ -42,7 +38,7 @@ module uart
         .rx_dout(rx_dout)
     );
     
-    buffer_r rx_FIFO (
+    buffer_r rx (
         .Clk(clk),          
         .Rst(reset_n), 
         .rpaddr(paddr),		 
@@ -56,8 +52,8 @@ module uart
 
     // Transmitter
     wire tx_empty, tx_done_tick;
-    wire [DBIT-1:0] txdin;
-    uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) transmitter(
+	wire [`BITWIDTH-1:0] txdin;
+    uart_tx transmitter(
         .clk(clk),
         .reset_n(~reset_n),
         .tx_start(tx_empty),
@@ -67,7 +63,7 @@ module uart
         .tx(t_x)
     );
     
-    buffer_t tx_FIFO (
+    buffer_t tx (
         .tClk(clk),         
         .tRst(~reset_n),
         .tpaddr(paddr),
