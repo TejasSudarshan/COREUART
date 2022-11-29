@@ -11,7 +11,6 @@ input PWRITE,
 input [`BITWIDTH-1:0]PWDATA,
 output [`BITWIDTH-1:0]PRDATA,
 output wire PREADY,
-output PARITYEN,
 input RX,
 output wire TX,
 
