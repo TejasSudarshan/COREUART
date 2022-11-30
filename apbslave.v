@@ -40,7 +40,7 @@ reg[1:0] state,next_state;
 assign TX_RDY = (tf_TXRDY)? 1'b1:1'b0;
 assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0;
 
-always @(posedge pclk, negedge presetn)begin
+	always @(negedge pclk, negedge presetn)begin
  if(!presetn)begin
    state<=`IDLE;
  end else begin
@@ -88,7 +88,7 @@ end
 end 
 end
  
-always@(posedge pclk)
+	always@(negedge pclk)
  begin
  
 case(state)
