@@ -15,6 +15,7 @@ address  11: not used.
 
 
 baud rate can be tested on: 
-1)  56000
-2)  38400
-3)  19200
+1)  128000
+2)  56000
+3)  38400
+4)  19200
