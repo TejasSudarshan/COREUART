@@ -1,5 +1,11 @@
 # ADLD-IRP
 
+
+
+
+
+How to finad the find the final value is the FINAL VALUE folder.
+
 ADDRESS: 2bit
 
 address  00: send final value 8bit (8'b00001101), value = 13. 
