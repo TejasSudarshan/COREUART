@@ -10,7 +10,7 @@ input [`BITWIDTH-1:0]tdataIn;
 output reg[`BITWIDTH-1:0] tdataOut;   
 
 assign tEMPTY = (!tWR && tRD)? 1'b0:1'b1; 
- assign ttxrdy = (!tWR && tRD)? 1'b0:1'b1;
+ assign ttxrdy = (!tWR && tRD)? 1'b1:1'b0;
  
 
 reg[`BITWIDTH-1:0]mem[3:0];
