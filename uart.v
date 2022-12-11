@@ -12,7 +12,7 @@ module uart (
         input wr_uart,
         output tx_full,
         output t_x,
-	input [`BIDWIDTH-1:0] TIMER_FINAL_VALUE
+	input [`BITWIDTH-1:0] TIMER_FINAL_VALUE
 		  //output tick
     );
     
