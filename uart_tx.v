@@ -1,6 +1,6 @@
 `timescale 1ns /1ps
 `define BITWIDTH 8
-`define SB_TICk 16
+`define SB_TICK 16
 
 
 module uart_tx(
