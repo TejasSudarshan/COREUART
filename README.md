@@ -6,9 +6,14 @@ Design and Implementation of SOC: Processor to device interface APB bridge to UA
 APB
 
 PWDATA = 8bit
+
 PRDATA = 8bit
+
 PADDR = 2bit
+
 DATAOUT = 8bit
+
+PCLK = 30MHz
 
 ///////////////////////////////////////////////////////////
 
@@ -36,7 +41,6 @@ Baudrate Generator
 
 FINAL_VALUE = 8bit
 
-PCLK = 30MHz
 
 ///////////////////////////////////////////////////////
 
