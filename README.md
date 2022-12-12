@@ -12,14 +12,18 @@ DATAOUT = 8bit
 ADDRESS: 2bit
 
 address  00: Baud value (8bit) 
+
 address  01: precision (8bit)
+
 address  10: send the data that has to be transmitted (8bit)
+
 address  11: not used.
 
 
 Write/Read operation
 
 pwrite = 0  psel = 1 penable = 1   (Read Operation)
+
 pwrite = 1  psel = 1 penable = 1   (Write operation)
 
 //////////////////////////////////////////////////
