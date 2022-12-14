@@ -118,7 +118,7 @@ endcase
 end 
  
 	
-assign o_baud_val=mem[0]|mem[1]; //baud value 
+assign o_baud_val=mem[0]; //baud value 
 assign data_in=mem[2]; //transmit data
 
 endmodule
