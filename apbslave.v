@@ -38,9 +38,8 @@ reg [BITWIDTH-1:0] mem[0:3];
 
 reg[1:0] state,next_state;
 
-
-assign TX_RDY = (tf_TXRDY)? 1'b0:1'b1;
-assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0;
+assign TX_RDY = (tf_TXRDY)? 1'b0:1'b1;  //TX_RDY shows wether the buffer is empty or not
+	assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0; //RX_RDY shows the valid data available
 
 always @(negedge pclk, negedge presetn)begin
  if(!presetn)begin
@@ -66,7 +65,7 @@ always @(negedge pclk, negedge presetn)begin
  
  
  `W_ENABLE : begin
-  if(psel==1'b1 && pwrite==1'b1 && penable==1'b1)begin
+if(psel==1'b1 && pwrite==1'b1 && penable==1'b1)begin  //write access
    next_state<=`W_ENABLE; 	
   end else begin
    next_state<=`IDLE;
@@ -75,7 +74,7 @@ end
   
 	 
  `R_ENABLE : begin
-  if(psel==1'b1 && pwrite==1'b0 && penable==1'b1)begin
+	 if(psel==1'b1 && pwrite==1'b0 && penable==1'b1)begin  //read access
     next_state<=`R_ENABLE;
   end else begin
     next_state<=`IDLE;
@@ -114,15 +113,12 @@ case(state)
  
 end
 
-`IDLE:begin
- 
-  end 
  
 endcase
 end 
  
-assign o_baud_val=mem[0]|mem[1];
-
-assign data_in=mem[2];
+	
+assign o_baud_val=mem[0]|mem[1]; //baud value 
+assign data_in=mem[2]; //transmit data
 
 endmodule
