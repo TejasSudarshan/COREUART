@@ -14,32 +14,25 @@ input  penable,
 input  [1:0]P_ADDR,
 input  pwrite,
 input  [BITWIDTH-1:0]PW_DATA,
+input rx,	
 output reg[BITWIDTH-1:0]Pr_data=8'b0,
 output reg P_READY=8'b1,
 output [BITWIDTH-1:0]o_baud_val,
 output [BITWIDTH-1:0]data_in,
 output  TX_RDY,
 output  RX_RDY,
+output  RXOUT,	
 input tf_TXRDY,
 input rbuff_RXRDY
-
-
 );
 parameter BITWIDTH=8;
-wire tx_done;
-wire rx_done;
-
-//reg [7:0]data=8'b10101010;
-//reg [7:0]data1=8'b00000011;
-//reg [7:0]data2=8'b01010101;
-//reg [7:0]data3=8'b00000000;
 
 reg [BITWIDTH-1:0] mem[0:3];
 
 reg[1:0] state,next_state;
 
 assign TX_RDY = (tf_TXRDY)? 1'b0:1'b1;  //TX_RDY shows wether the buffer is empty or not
-	assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0; //RX_RDY shows the valid data available
+assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0; //RX_RDY shows the valid data available
 
 always @(negedge pclk, negedge presetn)begin
  if(!presetn)begin
@@ -91,11 +84,6 @@ end
  
 always@(negedge pclk)
  begin
-  //mem[3]=data;
-  //mem[0]=data1;
-  //mem[1]=data3;
-  //mem[2]=data2;
-
 case(state)
 `SETUP:begin
   P_READY=1'b0;
@@ -110,14 +98,19 @@ case(state)
 `R_ENABLE:begin
  P_READY=1'b1;
  Pr_data=mem[P_ADDR];
- 
-end
-
- 
+ end 
+	
 endcase
 end 
- 
-	
+
+always @(negedge pclk)begin
+if(rx==1'b0)
+rxout=1'b0;
+else
+rxout=1'b1;
+end
+
+assign RXOUT=rxout;			
 assign o_baud_val=mem[0]; //baud value 
 assign data_in=mem[2]; //transmit data
 
