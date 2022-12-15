@@ -101,6 +101,7 @@ case(state)
  end 
 	
 endcase
+mem[3] = datain;
 end 
 
 always @(negedge pclk)begin
