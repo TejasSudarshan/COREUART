@@ -14,14 +14,15 @@ input  penable,
 input  [1:0]P_ADDR,
 input  pwrite,
 input  [BITWIDTH-1:0]PW_DATA,
-input rx,	
+input rx,
+input  [BITWIDTH-1:0]datain,
 output reg[BITWIDTH-1:0]Pr_data=8'b0,
 output reg P_READY=8'b1,
 output [BITWIDTH-1:0]o_baud_val,
 output [BITWIDTH-1:0]data_in,
 output  TX_RDY,
 output  RX_RDY,
-output  RXOUT,	
+output  RXOUT,
 input tf_TXRDY,
 input rbuff_RXRDY
 );
@@ -30,11 +31,11 @@ parameter BITWIDTH=8;
 reg [BITWIDTH-1:0] mem[0:3];
 
 reg[1:0] state,next_state;
-	
-reg rxout = 1'b1;
-	
-assign TX_RDY = (tf_TXRDY)? 1'b1:1'b0;  //TX_RDY shows wether the buffer is empty or not
-assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0; //RX_RDY shows the valid data available
+
+reg rxout=1'b1;
+
+assign TX_RDY = (tf_TXRDY)? 1'b1:1'b0;
+assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0;
 
 always @(negedge pclk, negedge presetn)begin
  if(!presetn)begin
@@ -60,7 +61,7 @@ always @(negedge pclk, negedge presetn)begin
  
  
  `W_ENABLE : begin
-if(psel==1'b1 && pwrite==1'b1 && penable==1'b1)begin  //write access
+  if(psel==1'b1 && pwrite==1'b1 && penable==1'b1)begin
    next_state<=`W_ENABLE; 	
   end else begin
    next_state<=`IDLE;
@@ -69,7 +70,7 @@ end
   
 	 
  `R_ENABLE : begin
-	 if(psel==1'b1 && pwrite==1'b0 && penable==1'b1)begin  //read access
+  if(psel==1'b1 && pwrite==1'b0 && penable==1'b1)begin
     next_state<=`R_ENABLE;
   end else begin
     next_state<=`IDLE;
@@ -86,24 +87,36 @@ end
  
 always@(negedge pclk)
  begin
+ // mem[3]=data;
+ // mem[0]=data1;
+ // mem[1]=data3;
+ // mem[2]=data2;
+
 case(state)
 `SETUP:begin
-  P_READY=1'b0;
+  P_READY = 1'b0;
   end
 
 `W_ENABLE:begin
- mem[P_ADDR]= PW_DATA;
- P_READY=1'b1; 
+ mem[P_ADDR] = PW_DATA;
+ P_READY = 1'b1; 
 
  end 
  
 `R_ENABLE:begin
- P_READY=1'b1;
- Pr_data=mem[P_ADDR];
- end 
-	
+ P_READY = 1'b1;
+ Pr_data = mem[P_ADDR];
+ 
+ end
+
+`IDLE:begin
+ 
+  end 
+ 
 endcase
-mem[3] = datain;
+
+ mem[3] = datain;
+
 end 
 
 always @(negedge pclk)begin
@@ -113,8 +126,10 @@ else
 rxout=1'b1;
 end
 
-assign RXOUT=rxout;			
-assign o_baud_val=mem[0]; //baud value 
-assign data_in=mem[2]; //transmit data
+assign RXOUT = rxout;
+ 
+assign o_baud_val = mem[0];
+
+assign data_in = mem[2];
 
 endmodule
