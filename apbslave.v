@@ -87,10 +87,6 @@ end
  
 always@(negedge pclk)
  begin
- // mem[3]=data;
- // mem[0]=data1;
- // mem[1]=data3;
- // mem[2]=data2;
 
 case(state)
 `SETUP:begin
