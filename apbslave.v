@@ -30,12 +30,7 @@ parameter BITWIDTH=8;
 
 reg [BITWIDTH-1:0] mem[0:3];
 
-reg[1:0] state,next_state;
-
-reg rxout=1'b1;
-
-assign TX_RDY = (tf_TXRDY)? 1'b1:1'b0;
-assign RX_RDY = (rbuff_RXRDY)? 1'b1:1'b0;
+reg[1:0] state,next_state; reg rxout=1'b1; reg txrdy = 1'b0; reg rxrdy = 1'b0;
 
 always @(negedge pclk, negedge presetn)begin
  if(!presetn)begin
@@ -77,6 +72,7 @@ end
   end
 end  
   
+  
   default: begin
    next_state <= `IDLE;
   end
@@ -88,7 +84,12 @@ end
 always@(negedge pclk)
  begin
 
+
 case(state)
+
+`IDLE:begin
+  end 
+
 `SETUP:begin
   P_READY = 1'b0;
   end
@@ -105,9 +106,7 @@ case(state)
  
  end
 
-`IDLE:begin
- 
-  end 
+
  
 endcase
 
@@ -115,17 +114,28 @@ endcase
 
 end 
 
+/////////////////////////////////////////////  RX line
 always @(negedge pclk)begin
 if(rx==1'b0)
 rxout=1'b0;
 else
 rxout=1'b1;
 end
+///////////////////////////////////////////// TXRDY status
+always @(negedge pclk)begin
+if(tf_TXRDY==1'b1)
+txrdy = 1'b1;
+else
+txrdy = 1'b0;
+end
 
-assign RXOUT = rxout;
- 
-assign o_baud_val = mem[0];
-
-assign data_in = mem[2];
-
+/////////////////////////////////////////////// RXRDY status
+always @(negedge pclk)begin
+if(rbuff_RXRDY==1'b1)
+rxrdy = 1'b1;
+else
+rxrdy = 1'b0;
+end
+//////////////////////////////////////////////
+assign RXOUT = rxout; assign o_baud_val = mem[0]; assign data_in = mem[2]; assign TX_RDY = txrdy; assign RX_RDY = rxrdy;
 endmodule
