@@ -23,8 +23,7 @@ if(tRst)begin
 else if(tRD)begin
  tdataOut=mem[tpaddr];      //Read from buffer
 end
-else
-   tdataOut=0;
+else;
 end
 end
 
